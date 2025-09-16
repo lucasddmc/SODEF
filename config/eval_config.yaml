@@ -1,0 +1,79 @@
+# Evaluation Configuration for Adversarial Robustness Testing
+
+# Model configuration
+model:
+  arch: "resnet18"
+  num_classes: 10
+
+# SODEF configuration
+sodef:
+  ode_dim: 64
+
+# Data configuration
+data:
+  data_dir: "./data"
+  num_workers: 2
+
+# Evaluation configuration
+eval:
+  batch_size: 100  # Batch size for attack evaluation
+  
+  # Model checkpoints to evaluate
+  baseline_checkpoint: "./checkpoints/baseline/checkpoint_best.pth"
+  sodef_checkpoint: "./checkpoints/sodef/final_model.pth"
+  
+  # Results directory
+  results_dir: "./results"
+  
+  # Attack configurations (following original SODEF paper)
+  attacks:
+    - name: "FGSM_Linf"
+      epsilon: 0.031372549  # 8/255
+      norm: "Linf"
+      max_batches: 100  # optional, limit speed
+
+    - name: "PGD10_Linf"
+      epsilon: 0.031372549  # 8/255
+      norm: "Linf"
+      steps: 10
+      alpha: 0.007843137  # 2/255
+      max_batches: 100
+    # The following AutoAttack entries are commented out for the minimal run.
+    # Uncomment any block below when you want comprehensive evaluation.
+    # - name: "AutoAttack_Linf"
+    #   epsilon: 0.031372549  # 8/255
+    #   norm: "Linf"
+    #   version: "standard"
+    #   max_batches: 100
+    # - name: "AutoAttack_L2"
+    #   epsilon: 0.5
+    #   norm: "L2" 
+    #   version: "standard"
+    #   max_batches: 50
+    # - name: "APGD_CE_Linf"
+    #   epsilon: 0.031372549
+    #   norm: "Linf"
+    #   version: "custom"
+    #   attacks_to_run: ["apgd-ce"]
+    #   max_batches: 50
+    # - name: "APGD_DLR_Linf"
+    #   epsilon: 0.031372549
+    #   norm: "Linf"
+    #   version: "custom"
+    #   attacks_to_run: ["apgd-dlr"]
+    #   max_batches: 50
+    # - name: "FAB_Linf"
+    #   epsilon: 0.031372549
+    #   norm: "Linf"
+    #   version: "custom"
+    #   attacks_to_run: ["fab"]
+    #   max_batches: 50
+    # - name: "Square_Linf"
+    #   epsilon: 0.031372549
+    #   norm: "Linf"
+    #   version: "custom"
+    #   attacks_to_run: ["square"]
+    #   max_batches: 50
+
+# Device configuration
+device: "auto"  # auto, cuda, cpu

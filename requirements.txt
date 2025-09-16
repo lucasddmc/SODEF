@@ -1,0 +1,20 @@
+# SODEF Dependencies for APUANA Cluster
+torch>=1.6.0
+torchvision>=0.7.0
+torchdiffeq
+numpy>=1.19.0
+pyyaml
+scipy
+matplotlib
+tqdm
+tensorboard
+
+# Optional dependencies for extended functionality
+wandb  # For experiment tracking (optional)
+robustbench  # For robust model benchmarking (optional)
+
+# Attack libraries
+autoattack  # For comprehensive attack evaluation
+
+# Geometric constraint library (as used in original SODEF)
+git+https://github.com/Lezcano/geotorch.git@0.2.0

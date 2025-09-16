@@ -1,0 +1,65 @@
+# SODEF Defense Training Configuration
+
+# Model configuration
+model:
+  arch: "resnet18"  # Must match baseline model
+  num_classes: 10
+
+# SODEF-specific configuration
+sodef:
+  ode_dim: 64  # Dimension of ODE features
+  integration_time: 5.0
+  
+  # Lyapunov stability regularization weights (from original paper)
+  regularization:
+    weight_diag: 10.0      # Diagonal regularization weight
+    weight_offdiag: 0.0    # Off-diagonal regularization weight  
+    weight_f: 0.1          # Function magnitude regularization weight
+    
+    # Regularization exponents
+    exponent: 1.0          # Diagonal exponent
+    exponent_off: 0.1      # Off-diagonal exponent
+    exponent_f: 50.0       # Function exponent
+    
+    # Translation parameters
+    trans: 1.0             # Diagonal translation
+    transoffdig: 1.0       # Off-diagonal translation
+    
+    # Sampling
+    num_samples: 16        # Number of samples for Jacobian computation
+
+# Data configuration
+data:
+  data_dir: "./data"
+  batch_size: 32  # Smaller batch for ODE training (memory intensive)
+  num_workers: 2
+  download: true
+  normalize: true
+
+# Training configuration
+training:
+  # Two-phase training
+  stability_epochs: 20    # Phase 1: Only stability regularization
+  classification_epochs: 10  # Phase 2: Classification + stability
+  
+  # Learning rates (from original paper)
+  ode_lr: 0.01           # Learning rate for ODE components
+  classifier_lr: 0.01    # Learning rate for classifier
+  ode_eps: 0.001         # Adam epsilon for ODE
+  classifier_eps: 0.0001 # Adam epsilon for classifier
+  
+  # Loss weights for phase 2
+  stability_weight: 1.0      # Stability loss weight
+  classification_weight: 0.1 # Classification loss weight
+
+# Paths
+paths:
+  baseline_checkpoint: "./checkpoints/baseline/checkpoint_best.pth"
+  save_dir: "./checkpoints/sodef"
+
+# Logging
+logging:
+  log_interval: 50
+
+# Device configuration
+device: "cuda"  # cuda, cpu, auto
