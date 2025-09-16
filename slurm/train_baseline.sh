@@ -5,7 +5,7 @@
 #SBATCH --mem=16G
 #SBATCH --gres=gpu:1
 #SBATCH --time=06:00:00
-#SBATCH --partition=long
+#SBATCH --partition=long-simple
 #SBATCH --output=logs/baseline_%j.out
 #SBATCH --error=logs/baseline_%j.err
 
